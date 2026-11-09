@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'" />
+  <title>NexKey</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+</head>
+<body data-theme="black">
+
+  <!-- ============ SVG sprite ============ -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true">
+    <symbol id="i-logo" viewBox="0 0 24 24">
+      <circle cx="7.6" cy="12" r="3.9" />
+      <line x1="11.5" y1="12" x2="19.5" y2="12" />
+      <line x1="15.4" y1="12" x2="15.4" y2="15.6" />
+      <line x1="19.5" y1="12" x2="19.5" y2="15.6" />
+    </symbol>
+    <symbol id="i-app" viewBox="0 0 24 24">
+      <rect x="3.2" y="4.2" width="17.6" height="15.6" rx="1.8" />
+      <line x1="3.2" y1="8.4" x2="20.8" y2="8.4" />
+      <line x1="6" y1="6.3" x2="7.2" y2="6.3" />
+      <line x1="8.6" y1="6.3" x2="9.8" y2="6.3" />
+    </symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.4" />
+      <ellipse cx="12" cy="12" rx="3.9" ry="8.4" />
+      <line x1="3.6" y1="12" x2="20.4" y2="12" />
+    </symbol>
+    <symbol id="i-file" viewBox="0 0 24 24">
+      <path d="M7 3.5h6.6L18.5 8.4v10.6a1.6 1.6 0 0 1-1.6 1.6H7a1.6 1.6 0 0 1-1.6-1.6V5.1A1.6 1.6 0 0 1 7 3.5Z" />
+      <path d="M13.4 3.8v4.6h4.8" />
+    </symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24">
+      <path d="M3.5 6.6A1.6 1.6 0 0 1 5.1 5h4.4l2 2.4h7.4a1.6 1.6 0 0 1 1.6 1.6v8.8a1.6 1.6 0 0 1-1.6 1.6H5.1a1.6 1.6 0 0 1-1.6-1.6Z" />
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24">
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </symbol>
+    <symbol id="i-search" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="6.4" />
+      <line x1="15.7" y1="15.7" x2="20" y2="20" />
+    </symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24">
+      <line x1="4" y1="7" x2="20" y2="7" />
+      <line x1="4" y1="12" x2="20" y2="12" />
+      <line x1="4" y1="17" x2="20" y2="17" />
+      <circle cx="9" cy="7" r="2" />
+      <circle cx="15" cy="12" r="2" />
+      <circle cx="11" cy="17" r="2" />
+    </symbol>
+    <symbol id="i-list" viewBox="0 0 24 24">
+      <line x1="9" y1="6.5" x2="20" y2="6.5" />
+      <line x1="9" y1="12" x2="20" y2="12" />
+      <line x1="9" y1="17.5" x2="20" y2="17.5" />
+      <rect x="3.8" y="5.6" width="2.2" height="2.2" rx="0.5" />
+      <rect x="3.8" y="11.1" width="2.2" height="2.2" rx="0.5" />
+      <rect x="3.8" y="16.6" width="2.2" height="2.2" rx="0.5" />
+    </symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24">
+      <rect x="8" y="6.5" width="2.6" height="11" rx="0.8" />
+      <rect x="13.4" y="6.5" width="2.6" height="11" rx="0.8" />
+    </symbol>
+    <symbol id="i-play" viewBox="0 0 24 24">
+      <path d="M9 6.6v10.8L17.8 12Z" />
+    </symbol>
+    <symbol id="i-x" viewBox="0 0 24 24">
+      <line x1="6.5" y1="6.5" x2="17.5" y2="17.5" />
+      <line x1="17.5" y1="6.5" x2="6.5" y2="17.5" />
+    </symbol>
+    <symbol id="i-min" viewBox="0 0 24 24">
+      <line x1="6" y1="17" x2="18" y2="17" />
+    </symbol>
+    <symbol id="i-max" viewBox="0 0 24 24">
+      <rect x="6" y="6" width="12" height="12" rx="1.4" />
+    </symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24">
+      <path d="M5.5 7h13" />
+      <path d="M9.5 7V5.6A1.6 1.6 0 0 1 11.1 4h1.8a1.6 1.6 0 0 1 1.6 1.6V7" />
+      <path d="M6.8 7l.7 11.3a1.6 1.6 0 0 0 1.6 1.5h5.8a1.6 1.6 0 0 0 1.6-1.5L17.2 7" />
+      <line x1="10" y1="10.5" x2="10" y2="15.5" />
+      <line x1="14" y1="10.5" x2="14" y2="15.5" />
+    </symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24">
+      <path d="M5 19l.9-3.9L16.4 4.6a1.7 1.7 0 0 1 2.4 0l.6.6a1.7 1.7 0 0 1 0 2.4L8.9 18.1 5 19Z" />
+      <line x1="14.5" y1="6.5" x2="17.5" y2="9.5" />
+    </symbol>
+    <symbol id="i-up" viewBox="0 0 24 24">
+      <path d="M7 13.8l5-5 5 5" />
+    </symbol>
+    <symbol id="i-down" viewBox="0 0 24 24">
+      <path d="M7 10.2l5 5 5-5" />
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path d="M5.5 12.6l4.3 4.3L18.5 8" />
+    </symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24">
+      <path d="M12 4.6L3.6 19.2h16.8L12 4.6Z" />
+      <line x1="12" y1="10" x2="12" y2="14.4" />
+      <circle cx="12" cy="16.9" r="0.4" />
+    </symbol>
+    <symbol id="i-info" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.4" />
+      <line x1="12" y1="11" x2="12" y2="16" />
+      <circle cx="12" cy="8.1" r="0.4" />
+    </symbol>
+    <symbol id="i-external" viewBox="0 0 24 24">
+      <path d="M13.5 6H18v4.5" />
+      <line x1="18" y1="6" x2="11.5" y2="12.5" />
+      <path d="M16 13.8V17a1.6 1.6 0 0 1-1.6 1.6H7A1.6 1.6 0 0 1 5.4 17V9.6A1.6 1.6 0 0 1 7 8h3.2" />
+    </symbol>
+    <symbol id="i-export" viewBox="0 0 24 24">
+      <line x1="12" y1="14.5" x2="12" y2="4.5" />
+      <path d="M8.5 8L12 4.5 15.5 8" />
+      <path d="M5 13.5V18a1.6 1.6 0 0 0 1.6 1.6h10.8A1.6 1.6 0 0 0 19 18v-4.5" />
+    </symbol>
+    <symbol id="i-import" viewBox="0 0 24 24">
+      <line x1="12" y1="4.5" x2="12" y2="14.5" />
+      <path d="M8.5 11L12 14.5 15.5 11" />
+      <path d="M5 13.5V18a1.6 1.6 0 0 0 1.6 1.6h10.8A1.6 1.6 0 0 0 19 18v-4.5" />
+    </symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24">
+      <path d="M19.4 12a7.4 7.4 0 1 1-2.1-5.2" />
+      <path d="M17.6 3.2v3.8h-3.8" />
+    </symbol>
+    <symbol id="i-keyboard" viewBox="0 0 24 24">
+      <rect x="3" y="7" width="18" height="10.4" rx="1.8" />
+      <line x1="6.4" y1="10.4" x2="6.9" y2="10.4" />
+      <line x1="9.4" y1="10.4" x2="9.9" y2="10.4" />
+      <line x1="12.4" y1="10.4" x2="12.9" y2="10.4" />
+      <line x1="15.4" y1="10.4" x2="15.9" y2="10.4" />
+      <line x1="17.2" y1="10.4" x2="17.7" y2="10.4" />
+      <line x1="7.4" y1="13.6" x2="7.9" y2="13.6" />
+      <line x1="16.2" y1="13.6" x2="16.7" y2="13.6" />
+      <line x1="10" y1="13.6" x2="14" y2="13.6" />
+    </symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24">
+      <path d="M13.2 3.5L6.6 13.2h4.1L10.8 20.5l6.6-9.7h-4.1L13.2 3.5Z" />
+    </symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24">
+      <rect x="3.4" y="5.4" width="17.2" height="13.2" rx="1.6" />
+      <path d="M4.4 7.2l7.6 5.9 7.6-5.9" />
+    </symbol>
+    <symbol id="i-send" viewBox="0 0 24 24">
+      <path d="M20.6 4.2L3.6 11l5.4 2.2 2.2 5.6 3-4.4 4.9 3.4 1.5-13.6Z" />
+      <line x1="9.4" y1="13.4" x2="20.2" y2="4.8" />
+    </symbol>
+    <symbol id="i-school" viewBox="0 0 24 24">
+      <path d="M12 4.5L2.8 9.4 12 14.3l9.2-4.9L12 4.5Z" />
+      <path d="M6.6 11.6v4.2c0 1.4 2.4 2.7 5.4 2.7s5.4-1.3 5.4-2.7v-4.2" />
+      <line x1="21.2" y1="9.6" x2="21.2" y2="14.8" />
+    </symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24">
+      <path d="M12 3.6l7 2.6v5.6c0 4.2-2.9 7.4-7 8.6-4.1-1.2-7-4.4-7-8.6V6.2l7-2.6Z" />
+      <path d="M9.2 12l2 2 3.6-3.8" />
+    </symbol>
+  </svg>
+
+  <!-- ============ animated background ============ -->
+  <div class="bg-anim" aria-hidden="true">
+    <div class="bg-ring r1"></div>
+    <div class="bg-ring r2"></div>
+    <div class="bg-lines"></div>
+  </div>
+
+  <div id="app">
+    <!-- ============ titlebar ============ -->
+    <div id="titlebar">
+      <div class="tb-left">
+        <svg class="ic tb-logo-ic"><use href="#i-logo" /></svg>
+        <span class="tb-name">NexKey</span>
+      </div>
+      <div class="tb-btns">
+        <button id="tb-min" class="tb-btn" data-i18n-title="titlebar.min"><svg class="ic"><use href="#i-min" /></svg></button>
+        <button id="tb-max" class="tb-btn" data-i18n-title="titlebar.max"><svg class="ic"><use href="#i-max" /></svg></button>
+        <button id="tb-close" class="tb-btn tb-close" data-i18n-title="titlebar.close"><svg class="ic"><use href="#i-x" /></svg></button>
+      </div>
+    </div>
+
+    <div id="shell">
+      <!-- ============ sidebar ============ -->
+      <aside id="sidebar">
+        <div class="brand">
+          <div class="brand-tile"><svg class="ic"><use href="#i-logo" /></svg></div>
+          <div class="brand-text">
+            <span class="brand-name">NexKey</span>
+            <span class="brand-tag" data-i18n="app.tagline"></span>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <button class="nav-item active" data-view="bindings">
+            <svg class="ic"><use href="#i-list" /></svg><span data-i18n="nav.bindings"></span>
+          </button>
+          <button class="nav-item" data-view="settings">
+            <svg class="ic"><use href="#i-gear" /></svg><span data-i18n="nav.settings"></span>
+          </button>
+        </nav>
+
+        <div class="side-block">
+          <div class="side-block-label">
+            <svg class="ic"><use href="#i-bolt" /></svg>
+            <span data-i18n="nav.active"></span>
+          </div>
+          <button id="pause-switch" class="switch on" role="switch" aria-checked="true" aria-label="hotkeys">
+            <span class="knob"></span>
+          </button>
+        </div>
+
+        <div id="status-chip" class="status-chip on">
+          <span class="dot"></span>
+          <span id="status-text" data-i18n="nav.active"></span>
+        </div>
+
+        <div class="side-footer">
+          <div class="side-footer-line">NsOS Dev x 76 School</div>
+          <div class="side-footer-line dim" id="ver-label">v1.0.0</div>
+        </div>
+      </aside>
+
+      <!-- ============ content ============ -->
+      <main id="content">
+        <!-- bindings view -->
+        <section id="view-bindings" class="view active">
+          <div class="page-head">
+            <div class="page-head-text">
+              <h1 data-i18n="view.bindings"></h1>
+              <div class="page-sub" id="stat-line"></div>
+            </div>
+            <button id="btn-add" class="btn btn-solid btn-add">
+              <svg class="ic"><use href="#i-plus" /></svg><span data-i18n="btn.add"></span>
+            </button>
+          </div>
+
+          <div id="paused-banner" class="paused-banner" hidden>
+            <svg class="ic"><use href="#i-pause" /></svg>
+            <span data-i18n="view.pausedNote"></span>
+          </div>
+
+          <div class="toolbar">
+            <div class="search">
+              <svg class="ic"><use href="#i-search" /></svg>
+              <input id="search" type="text" autocomplete="off" spellcheck="false" data-i18n-ph="search.ph" />
+            </div>
+            <div class="chips" id="filters">
+              <button class="chip active" data-filter="all" data-i18n="filter.all"></button>
+              <button class="chip" data-filter="app" data-i18n="filter.app"></button>
+              <button class="chip" data-filter="site" data-i18n="filter.site"></button>
+              <button class="chip" data-filter="file" data-i18n="filter.file"></button>
+            </div>
+          </div>
+
+          <div id="binding-list" class="binding-list"></div>
+
+          <div id="empty-state" class="empty" hidden>
+            <div class="empty-art">
+              <svg class="ic"><use href="#i-keyboard" /></svg>
+              <div class="empty-ring"></div>
+            </div>
+            <h2 data-i18n="empty.title"></h2>
+            <p data-i18n="empty.text"></p>
+            <button id="btn-empty-add" class="btn btn-solid">
+              <svg class="ic"><use href="#i-plus" /></svg><span data-i18n="empty.cta"></span>
+            </button>
+          </div>
+        </section>
+
+        <!-- settings view -->
+        <section id="view-settings" class="view">
+          <div class="page-head">
+            <div class="page-head-text">
+              <h1 data-i18n="view.settings"></h1>
+            </div>
+          </div>
+
+          <div class="sec">
+            <div class="sec-title" data-i18n="settings.general"></div>
+
+            <div class="row">
+              <div class="row-text">
+                <div class="row-name" data-i18n="settings.language"></div>
+              </div>
+              <div class="seg" id="set-lang">
+                <button data-lang="en">English</button>
+                <button data-lang="ru">Русский</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="row-text">
+                <div class="row-name" data-i18n="settings.theme"></div>
+              </div>
+              <div class="seg" id="set-theme">
+                <button data-theme="black" data-i18n="settings.themeBlack"></button>
+                <button data-theme="white" data-i18n="settings.themeWhite"></button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="row-text">
+                <div class="row-name" data-i18n="settings.autostart"></div>
+                <div class="row-hint" data-i18n="settings.autostartHint"></div>
+              </div>
+              <button id="set-autostart" class="switch" role="switch" aria-checked="false"><span class="knob"></span></button>
+            </div>
+
+            <div class="row">
+              <div class="row-text">
+                <div class="row-name" data-i18n="settings.startHidden"></div>
+                <div class="row-hint" data-i18n="settings.startHiddenHint"></div>
+              </div>
+              <button id="set-hidden" class="switch" role="switch" aria-checked="false"><span class="knob"></span></button>
+            </div>
+
+            <div class="row">
+              <div class="row-text">
+                <div class="row-name" data-i18n="settings.closeToTray"></div>
+                <div class="row-hint" data-i18n="settings.closeToTrayHint"></div>
+              </div>
+              <button id="set-closetray" class="switch" role="switch" aria-checked="false"><span class="knob"></span></button>
+            </div>
+          </div>
+
+          <div class="sec">
+            <div class="sec-title" data-i18n="settings.behavior"></div>
+
+            <div class="row">
+              <div class="row-text">
+                <div class="row-name" data-i18n="settings.notifications"></div>
+                <div class="row-hint" data-i18n="settings.notificationsHint"></div>
+              </div>
+              <button id="set-notif" class="switch" role="switch" aria-checked="false"><span class="knob"></span></button>
+            </div>
+
+            <div class="row">
+              <div class="row-text">
+                <div class="row-name" data-i18n="settings.autoUpdate"></div>
+                <div class="row-hint" data-i18n="settings.autoUpdateHint"></div>
+              </div>
+              <button id="set-autoupd" class="switch" role="switch" aria-checked="false"><span class="knob"></span></button>
+            </div>
+          </div>
+
+          <div class="sec">
+            <div class="sec-title" data-i18n="settings.data"></div>
+            <div class="btn-row">
+              <button id="set-export" class="btn btn-ghost"><svg class="ic"><use href="#i-export" /></svg><span data-i18n="settings.export"></span></button>
+              <button id="set-import" class="btn btn-ghost"><svg class="ic"><use href="#i-import" /></svg><span data-i18n="settings.import"></span></button>
+              <button id="set-resetstats" class="btn btn-ghost"><svg class="ic"><use href="#i-refresh" /></svg><span data-i18n="settings.resetStats"></span></button>
+              <button id="set-resetall" class="btn btn-ghost btn-danger"><svg class="ic"><use href="#i-trash" /></svg><span data-i18n="settings.resetAll"></span></button>
+            </div>
+          </div>
+
+          <div class="sec sec-about">
+            <div class="sec-title" data-i18n="settings.about"></div>
+            <div class="about">
+              <div class="about-left">
+                <div class="brand-tile big"><svg class="ic"><use href="#i-logo" /></svg></div>
+                <div class="about-ver">
+                  <div class="about-name">NexKey</div>
+                  <div class="about-version"><span data-i18n="settings.aboutVersion"></span> <span id="about-ver">1.0.0</span></div>
+                </div>
+              </div>
+              <div class="about-right">
+                <button id="set-checkupd" class="btn btn-ghost"><svg class="ic"><use href="#i-refresh" /></svg><span data-i18n="btn.checkUpdates"></span></button>
+                <div class="about-links">
+                  <button class="link" data-url="https://github.com/official-ids/NbOS-dev">
+                    <svg class="ic"><use href="#i-external" /></svg>GitHub - official-ids/NbOS-dev
+                  </button>
+                  <button class="link" data-url="https://76school.vercel.app">
+                    <svg class="ic"><use href="#i-school" /></svg>76school.vercel.app
+                  </button>
+                  <button class="link" data-url="https://t.me/nbsp_acc">
+                    <svg class="ic"><use href="#i-send" /></svg>@nbsp_acc
+                  </button>
+                  <button class="link" data-url="mailto:iamytn@duck.com">
+                    <svg class="ic"><use href="#i-mail" /></svg>iamytn@duck.com
+                  </button>
+                </div>
+                <div class="about-credits">
+                  <div><span class="dim" data-i18n="settings.developedBy"></span> NsOS Dev</div>
+                  <div><span class="dim" data-i18n="settings.withSupport"></span> 76 School</div>
+                  <div><span class="dim" data-i18n="settings.license"></span> <span data-i18n="settings.licenseVal"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ============ overlay + modals ============ -->
+  <div id="overlay" class="overlay" hidden>
+
+    <!-- add / edit binding -->
+    <div id="modal-binding" class="modal" hidden>
+      <div class="modal-head">
+        <h2 id="bm-title"></h2>
+        <button id="bm-close" class="icon-btn"><svg class="ic"><use href="#i-x" /></svg></button>
+      </div>
+      <div class="modal-body">
+        <div class="field">
+          <span class="lbl" data-i18n="form.name"></span>
+          <input id="f-name" type="text" autocomplete="off" spellcheck="false" data-i18n-ph="form.namePh" />
+        </div>
+
+        <div class="field">
+          <span class="lbl" data-i18n="form.type"></span>
+          <div class="seg seg-3" id="f-type">
+            <button data-type="app"><svg class="ic"><use href="#i-app" /></svg><span data-i18n="form.typeApp"></span></button>
+            <button data-type="site"><svg class="ic"><use href="#i-globe" /></svg><span data-i18n="form.typeSite"></span></button>
+            <button data-type="file"><svg class="ic"><use href="#i-folder" /></svg><span data-i18n="form.typeFile"></span></button>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="lbl" id="f-target-label" data-i18n="form.target"></span>
+          <div class="target-row">
+            <input id="f-target" type="text" class="mono" autocomplete="off" spellcheck="false" />
+            <button id="f-browse" class="btn btn-ghost"><svg class="ic"><use href="#i-folder" /></svg><span data-i18n="btn.browse"></span></button>
+          </div>
+        </div>
+
+        <div class="field" id="f-args-row" hidden>
+          <span class="lbl" data-i18n="form.args"></span>
+          <input id="f-args" type="text" class="mono" autocomplete="off" spellcheck="false" data-i18n-ph="form.argsPh" />
+        </div>
+
+        <label class="check" id="f-elevated-row" hidden>
+          <input type="checkbox" id="f-elevated" />
+          <span class="check-text">
+            <span data-i18n="form.elevated"></span>
+            <span class="row-hint" data-i18n="form.elevatedHint"></span>
+          </span>
+        </label>
+
+        <div class="field">
+          <span class="lbl" data-i18n="form.hotkey"></span>
+          <div id="f-recorder" class="recorder" tabindex="0">
+            <span class="rec-chips" id="rec-chips"></span>
+            <span class="rec-hint" data-i18n="form.press"></span>
+          </div>
+          <div class="hint warn" id="f-rec-warn" hidden data-i18n="form.noModWarn"></div>
+          <div class="hint err" id="f-rec-err" hidden data-i18n="form.invalid"></div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button id="f-test" class="btn btn-ghost"><svg class="ic"><use href="#i-play" /></svg><span data-i18n="modal.test"></span></button>
+        <div class="spacer"></div>
+        <button id="f-cancel" class="btn btn-ghost" data-i18n="btn.cancel"></button>
+        <button id="f-save" class="btn btn-solid" data-i18n="btn.save"></button>
+      </div>
+    </div>
+
+    <!-- generic confirm -->
+    <div id="modal-confirm" class="modal modal-sm" hidden>
+      <div class="modal-head">
+        <h2 id="cf-title"></h2>
+        <button id="cf-x" class="icon-btn"><svg class="ic"><use href="#i-x" /></svg></button>
+      </div>
+      <div class="modal-body">
+        <p id="cf-text" class="confirm-text"></p>
+      </div>
+      <div class="modal-foot">
+        <div class="spacer"></div>
+        <button id="cf-cancel" class="btn btn-ghost" data-i18n="confirm.cancel"></button>
+        <button id="cf-yes" class="btn btn-solid"></button>
+      </div>
+    </div>
+
+    <!-- welcome -->
+    <div id="modal-welcome" class="modal" hidden>
+      <div class="welcome-head">
+        <div class="brand-tile big"><svg class="ic"><use href="#i-logo" /></svg></div>
+        <h2 data-i18n="welcome.title"></h2>
+      </div>
+      <div class="modal-body">
+        <div class="wstep">
+          <div class="wnum">01</div>
+          <div class="wtext"><div class="wtitle" data-i18n="welcome.s1t"></div><div class="wdesc" data-i18n="welcome.s1d"></div></div>
+        </div>
+        <div class="wstep">
+          <div class="wnum">02</div>
+          <div class="wtext"><div class="wtitle" data-i18n="welcome.s2t"></div><div class="wdesc" data-i18n="welcome.s2d"></div></div>
+        </div>
+        <div class="wstep">
+          <div class="wnum">03</div>
+          <div class="wtext"><div class="wtitle" data-i18n="welcome.s3t"></div><div class="wdesc" data-i18n="welcome.s3d"></div></div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <div class="spacer"></div>
+        <button id="welcome-done" class="btn btn-solid" data-i18n="welcome.done"></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toasts"></div>
+
+  <script src="i18n.js"></script>
+  <script src="locales/en.js"></script>
+  <script src="locales/ru.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

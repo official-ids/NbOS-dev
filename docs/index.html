@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NexKey - One key. Instant action.</title>
+<meta name="description" content="NexKey - instant hotkey launcher for applications, websites and files. Background utility by NsOS Dev x 76 School. Windows 10/11 and macOS." />
+<style>
+  :root {
+    --bg: #050505; --panel: #0d0d0d; --panel-2: #161616; --border: #262626;
+    --text: #fff; --dim: #a8a8a8; --faint: #6b6b6b;
+    --mono: 'Cascadia Mono', Consolas, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  /* animated background */
+  .bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .ring { position: absolute; border-radius: 50%; border: 1.5px solid #fff; opacity: .05; animation: drift 50s linear infinite; }
+  .ring.r1 { width: 640px; height: 640px; top: -200px; right: -160px; }
+  .ring.r2 { width: 800px; height: 800px; bottom: -340px; left: -260px; animation-direction: reverse; animation-duration: 70s; }
+  @keyframes drift { 50% { transform: translate(-38px, 28px) rotate(10deg); } }
+
+  /* nav */
+  nav { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.01em; }
+  .logo-tile { width: 34px; height: 34px; border-radius: 10px; background: #fff; color: #000; display: flex; align-items: center; justify-content: center; }
+  .logo-tile svg { width: 18px; height: 18px; }
+  .nav-links { display: flex; gap: 22px; font-size: 14px; color: var(--dim); }
+  .nav-links a:hover { color: #fff; }
+
+  /* hero */
+  .hero { position: relative; z-index: 1; text-align: center; padding: 92px 0 72px; }
+  .hero h1 { font-size: clamp(56px, 10vw, 108px); font-weight: 800; letter-spacing: -.045em; line-height: 1; }
+  .hero h1 span { display: inline-block; animation: rise .7s cubic-bezier(.2,.9,.3,1) backwards; }
+  .hero h1 span:nth-child(2) { animation-delay: .06s; } .hero h1 span:nth-child(3) { animation-delay: .12s; }
+  .hero h1 span:nth-child(4) { animation-delay: .18s; } .hero h1 span:nth-child(5) { animation-delay: .24s; }
+  .hero h1 span:nth-child(6) { animation-delay: .3s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(26px); } }
+  .tagline { margin-top: 18px; color: var(--dim); font-size: 18px; letter-spacing: .01em; animation: rise .7s .38s backwards; }
+  .hero .keys { display: flex; gap: 8px; justify-content: center; margin-top: 30px; animation: rise .7s .46s backwards; }
+  .keycap { font-family: var(--mono); font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 8px; border: 1px solid #3a3a3a; border-bottom-width: 3px; background: var(--panel-2); }
+  .hero .cta { display: flex; gap: 14px; justify-content: center; margin-top: 36px; animation: rise .7s .54s backwards; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 9px; padding: 13px 26px; border-radius: 10px; font-weight: 600; font-size: 15px; transition: all .2s ease; border: 1px solid #3a3a3a; color: var(--dim); }
+  .btn.solid { background: #fff; color: #000; border-color: #fff; }
+  .btn.solid:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,255,255,.12); }
+  .btn.ghost:hover { color: #fff; border-color: #6b6b6b; transform: translateY(-2px); }
+
+  /* screenshot */
+  .shot { position: relative; z-index: 1; margin: 26px auto 0; max-width: 920px; animation: rise .8s .62s backwards; }
+  .shot img { width: 100%; border-radius: 14px; border: 1px solid var(--border); box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+
+  /* sections */
+  section { position: relative; z-index: 1; padding: 84px 0; }
+  h2 { font-size: 30px; letter-spacing: -.02em; margin-bottom: 10px; }
+  .sub { color: var(--faint); font-size: 15px; margin-bottom: 40px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 22px; transition: all .22s ease; }
+  .card:hover { border-color: #3a3a3a; transform: translateY(-3px); }
+  .card h3 { font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+  .card p { color: var(--dim); font-size: 13.5px; line-height: 1.6; }
+  .num { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+
+  /* steps */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .step { border: 1px dashed #3a3a3a; border-radius: 14px; padding: 24px; }
+  .step b { font-size: 26px; font-family: var(--mono); }
+  .step p { margin-top: 10px; color: var(--dim); font-size: 13.5px; line-height: 1.6; }
+
+  /* footer */
+  footer { position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 44px 0 60px; margin-top: 40px; }
+  .fgrid { display: flex; justify-content: space-between; gap: 30px; flex-wrap: wrap; }
+  .fcol h4 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--faint); margin-bottom: 12px; }
+  .fcol a, .fcol span { display: block; color: var(--dim); font-size: 14px; margin-bottom: 8px; }
+  .fcol a:hover { color: #fff; }
+  .copy { margin-top: 34px; color: var(--faint); font-size: 12.5px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+  @media (max-width: 640px) { .nav-links { display: none; } .hero { padding-top: 60px; } }
+</style>
+</head>
+<body>
+
+<div class="bg"><div class="ring r1"></div><div class="ring r2"></div></div>
+
+<nav class="wrap">
+  <a class="logo" href="#">
+    <span class="logo-tile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="7.6" cy="12" r="3.9"/>
+        <line x1="11.5" y1="12" x2="19.5" y2="12"/>
+        <line x1="15.4" y1="12" x2="15.4" y2="15.6"/>
+        <line x1="19.5" y1="12" x2="19.5" y2="15.6"/>
+      </svg>
+    </span>
+    NexKey
+  </a>
+  <div class="nav-links">
+    <a href="#features" data-en="Features" data-ru="Возможности">Features</a>
+    <a href="#how" data-en="How it works" data-ru="Как работает">How it works</a>
+    <a href="#download" data-en="Download" data-ru="Скачать">Download</a>
+    <a href="https://github.com/official-ids/NbOS-dev" target="_blank" rel="noopener">GitHub</a>
+  </div>
+  <button id="lang" style="background:none;border:1px solid #3a3a3a;border-radius:8px;color:#a8a8a8;padding:7px 14px;font-size:13px;cursor:pointer;transition:.2s">RU</button>
+</nav>
+
+<header class="hero wrap">
+  <h1><span>N</span><span>E</span><span>X</span><span>K</span><span>E</span><span>Y</span></h1>
+  <p class="tagline" data-en="One key. Instant action. Hotkey launcher for apps, sites and files - living in the background 24/7."
+     data-ru="Одна клавиша. Мгновенное действие. Лаунчер приложений, сайтов и файлов - живёт в фоне 24/7.">
+     One key. Instant action. Hotkey launcher for apps, sites and files - living in the background 24/7.</p>
+  <div class="keys"><span class="keycap">Ctrl</span><span class="keycap">Alt</span><span class="keycap">Z</span></div>
+  <div class="cta">
+    <a class="btn solid" href="https://github.com/official-ids/NbOS-dev/releases" target="_blank" rel="noopener"
+       data-en="Download for Windows / macOS" data-ru="Скачать для Windows / macOS">Download for Windows / macOS</a>
+    <a class="btn ghost" href="https://github.com/official-ids/NbOS-dev" target="_blank" rel="noopener">Source code</a>
+  </div>
+  <div class="shot"><img src="screenshots/main-dark.png" alt="NexKey main window" /></div>
+</header>
+
+<section id="features" class="wrap">
+  <h2 data-en="Everything in black and white" data-ru="Всё в чёрно-белом">Everything in black and white</h2>
+  <p class="sub" data-en="No colors, no noise, no emojis. Strict monochrome interface with smooth animations."
+     data-ru="Ни цвета, ни шума, ни эмодзи. Строгий монохромный интерфейс с плавными анимациями.">
+     No colors, no noise, no emojis. Strict monochrome interface with smooth animations.</p>
+  <div class="grid">
+    <div class="card"><h3><span class="num">01</span><span data-en="Global hotkeys" data-ru="Глобальные хоткеи">Global hotkeys</span></h3>
+      <p data-en="Combinations with Ctrl, Alt, Shift and Win/Cmd work from any application, even in games and fullscreen."
+         data-ru="Сочетания с Ctrl, Alt, Shift и Win/Cmd работают из любого приложения, даже из игр и полноэкранных окон.">
+         Combinations with Ctrl, Alt, Shift and Win/Cmd work from any application, even in games and fullscreen.</p></div>
+    <div class="card"><h3><span class="num">02</span><span data-en="Three binding types" data-ru="Три типа связок">Three binding types</span></h3>
+      <p data-en="Launch an .exe or .bat script, open a website in your browser, or open any file or folder."
+         data-ru="Запуск .exe или .bat-скрипта, открытие сайта в браузере, открытие любого файла или папки.">
+         Launch an .exe or .bat script, open a website in your browser, or open any file or folder.</p></div>
+    <div class="card"><h3><span class="num">03</span><span data-en="24/7 background" data-ru="Фон 24/7">24/7 background</span></h3>
+      <p data-en="Starts with the system, sits in the tray, survives reboots. The close button just hides the window."
+         data-ru="Стартует вместе с системой, живёт в трее, переживает перезагрузки. Кнопка закрытия лишь прячет окно.">
+         Starts with the system, sits in the tray, survives reboots. The close button just hides the window.</p></div>
+    <div class="card"><h3><span class="num">04</span><span data-en="Administrator mode" data-ru="Режим администратора">Administrator mode</span></h3>
+      <p data-en="Optional elevated launch for Windows tools that require UAC - with a visible prompt every time."
+         data-ru="Опциональный запуск с правами для инструментов Windows, требующих UAC - с видимым запросом каждый раз.">
+         Optional elevated launch for Windows tools that require UAC - with a visible prompt every time.</p></div>
+    <div class="card"><h3><span class="num">05</span><span data-en="Statistics" data-ru="Статистика">Statistics</span></h3>
+      <p data-en="Launch counters and last-run time for every binding. Reset everything with one button."
+         data-ru="Счётчики запусков и время последнего запуска для каждой связки. Сброс одной кнопкой.">
+         Launch counters and last-run time for every binding. Reset everything with one button.</p></div>
+    <div class="card"><h3><span class="num">06</span><span data-en="Export and import" data-ru="Экспорт и импорт">Export and import</span></h3>
+      <p data-en="The whole configuration is one JSON file. Back it up, move it to another PC, share it."
+         data-ru="Вся конфигурация - один JSON-файл. Сделайте копию, перенесите на другой ПК, поделитесь.">
+         The whole configuration is one JSON file. Back it up, move it to another PC, share it.</p></div>
+  </div>
+</section>
+
+<section id="how" class="wrap">
+  <h2 data-en="Three steps" data-ru="Три шага">Three steps</h2>
+  <p class="sub" data-en="From download to a working hotkey - about one minute."
+     data-ru="От скачивания до рабочего хоткея - примерно минута.">
+     From download to a working hotkey - about one minute.</p>
+  <div class="steps">
+    <div class="step"><b>01</b><p data-en="Install NexKey and enable "Start with system". It hides into the tray and stays there."
+       data-ru="Установите NexKey и включите «Запускать вместе с системой». Он свернётся в трей и останется там.">
+       Install NexKey and enable "Start with system". It hides into the tray and stays there.</p></div>
+    <div class="step"><b>02</b><p data-en="Add a binding: pick an app, a site or a file. Example: zapret\general.bat for one-key YouTube access."
+       data-ru="Добавьте связку: приложение, сайт или файл. Пример: zapret\general.bat для доступа к YouTube одной клавишей.">
+       Add a binding: pick an app, a site or a file. Example: zapret\general.bat for one-key YouTube access.</p></div>
+    <div class="step"><b>03</b><p data-en="Assign a hotkey like Ctrl+Alt+Z. It works everywhere - today, tomorrow and after every reboot."
+       data-ru="Назначьте хоткей вроде Ctrl+Alt+Z. Он работает везде - сегодня, завтра и после каждой перезагрузки.">
+       Assign a hotkey like Ctrl+Alt+Z. It works everywhere - today, tomorrow and after every reboot.</p></div>
+  </div>
+</section>
+
+<section id="download" class="wrap">
+  <h2 data-en="Download" data-ru="Скачать">Download</h2>
+  <p class="sub" data-en="Free and open source under the MIT license. Windows 10/11 (installer or portable) and macOS (Intel, Apple Silicon)."
+     data-ru="Бесплатно и с открытым кодом по лицензии MIT. Windows 10/11 (установщик или портативная версия) и macOS (Intel, Apple Silicon).">
+     Free and open source under the MIT license. Windows 10/11 (installer or portable) and macOS (Intel, Apple Silicon).</p>
+  <div class="cta" style="display:flex;gap:14px;flex-wrap:wrap">
+    <a class="btn solid" href="https://github.com/official-ids/NbOS-dev/releases" target="_blank" rel="noopener"
+       data-en="Get the latest release" data-ru="Получить последний релиз">Get the latest release</a>
+    <a class="btn ghost" href="https://github.com/official-ids/NbOS-dev/blob/main/docs/INSTALL_en.md" target="_blank" rel="noopener"
+       data-en="Installation guide" data-ru="Инструкция по установке">Installation guide</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div class="fcol">
+        <h4 data-en="Project" data-ru="Проект">Project</h4>
+        <a href="https://github.com/official-ids/NbOS-dev" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/official-ids/NbOS-dev/releases" target="_blank" rel="noopener">Releases</a>
+        <a href="https://github.com/official-ids/NbOS-dev/issues" target="_blank" rel="noopener">Issues</a>
+      </div>
+      <div class="fcol">
+        <h4 data-en="Docs" data-ru="Документация">Docs</h4>
+        <a href="https://github.com/official-ids/NbOS-dev/blob/main/docs/HELP_en.md" target="_blank" rel="noopener">HELP (EN)</a>
+        <a href="https://github.com/official-ids/NbOS-dev/blob/main/docs/HELP_ru.md" target="_blank" rel="noopener">HELP (RU)</a>
+        <a href="https://github.com/official-ids/NbOS-dev/blob/main/docs/FAQ_en.md" target="_blank" rel="noopener">FAQ</a>
+      </div>
+      <div class="fcol">
+        <h4 data-en="Team" data-ru="Команда">Team</h4>
+        <span>NsOS Dev</span>
+        <a href="https://76school.vercel.app" target="_blank" rel="noopener">76 School - 76school.vercel.app</a>
+      </div>
+      <div class="fcol">
+        <h4 data-en="Contacts" data-ru="Контакты">Contacts</h4>
+        <a href="https://t.me/nbsp_acc" target="_blank" rel="noopener">Telegram: @nbsp_acc</a>
+        <a href="mailto:iamytn@duck.com">iamytn@duck.com</a>
+      </div>
+    </div>
+    <div class="copy">
+      <span>2026 NsOS Dev x 76 School. MIT License.</span>
+      <span>NexKey - one key. Instant action.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var btn = document.getElementById('lang');
+    var lang = 'en';
+    function apply() {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-en]').forEach(function (el) {
+        el.textContent = el.getAttribute('data-' + lang);
+      });
+      btn.textContent = lang === 'en' ? 'RU' : 'EN';
+    }
+    btn.addEventListener('click', function () {
+      lang = lang === 'en' ? 'ru' : 'en';
+      apply();
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+================================================================
+  NEXKEY - QUICK START (English)              v1.0.0
+  NsOS Dev x 76 School - 76school.vercel.app
+================================================================
+
+WHAT IT IS
+  A background utility that opens any application, website
+  or file by pressing a hotkey - system-wide, 24/7.
+
+INSTALL (Windows)
+  1. Download NexKey-Setup-1.0.0.exe from GitHub Releases:
+     https://github.com/official-ids/NbOS-dev/releases
+  2. Run it, choose a folder, finish.
+  3. In NexKey settings enable "Start with system".
+
+CREATE YOUR FIRST BINDING (example: zapret)
+  1. Open NexKey and press "New binding".
+  2. Type: Application.
+  3. Target: C:\Tools\zapret\general.bat  (your real path)
+  4. "Run as administrator" - enable if the script needs it.
+  5. Hotkey: click the field, press Ctrl+Alt+Z.
+  6. Save. Done - press Ctrl+Alt+Z anywhere.
+
+USEFUL KEYS IN THE APP
+  Ctrl+N   - new binding
+  /        - focus search
+  Esc      - close dialog
+
+WHERE THINGS ARE
+  Tray icon        - open, pause hotkeys, autostart, quit
+  Settings         - language EN/RU, theme black/white,
+                     autostart, notifications, export/import
+  Config file      - %APPDATA%\nexkey\config.json
+  Log file         - %APPDATA%\nexkey\nexkey.log
+
+macOS
+  After copying the app, run once:
+  xattr -cr /Applications/NexKey.app
+
+IF A HOTKEY DOES NOT WORK
+  - check the binding is enabled;
+  - check the global pause switch (sidebar);
+  - if the card shows "!" - the combination is busy,
+    choose another one.
+
+CONTACTS
+  Telegram: @nbsp_acc
+  Email:    iamytn@duck.com
+  GitHub:   https://github.com/official-ids/NbOS-dev
+
+Full manual: docs/HELP_en.md
+License: MIT

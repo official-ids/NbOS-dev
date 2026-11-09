@@ -1,0 +1,23 @@
+NexKey ${version}
+Copyright (c) 2026 NsOS Dev & 76 School (76school.vercel.app)
+
+MIT License. This software is provided "AS IS", without warranty of any kind.
+Full license text: https://github.com/official-ids/NbOS-dev/blob/main/LICENSE
+
+By continuing the installation you accept the terms of the MIT License.
+
+Contacts: Telegram @nbsp_acc - Email iamytn@duck.com
+
+--------------------------------------------------------------------------
+
+NexKey ${version}
+Copyright (c) 2026 NsOS Dev  76  (76school.vercel.app)
+
+ MIT.
+      " ",    - 
+ .
+  : https://github.com/official-ids/NbOS-dev/blob/main/LICENSE
+
+      MIT.
+
+: Telegram @nbsp_acc - Email iamytn@duck.com

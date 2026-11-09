@@ -1,0 +1,87 @@
+{
+  "name": "nexkey",
+  "productName": "NexKey",
+  "version": "1.0.0",
+  "description": "NexKey - instant hotkey launcher for applications, websites and files. Background utility by NsOS Dev x 76 School.",
+  "main": "src/main/main.js",
+  "private": true,
+  "author": "NsOS Dev <iamytn@duck.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/official-ids/NbOS-dev#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/official-ids/NbOS-dev.git"
+  },
+  "bugs": {
+    "url": "https://github.com/official-ids/NbOS-dev/issues"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --publish never",
+    "dist:win": "electron-builder --win --publish never",
+    "dist:mac": "electron-builder --mac --publish never"
+  },
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "dev.nsos.nexkey",
+    "productName": "NexKey",
+    "asar": true,
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "build/icon.png",
+      "package.json",
+      "!**/*.md",
+      "!**/*.map"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "license": "build/license.txt",
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "NexKey",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false,
+      "artifactName": "NexKey-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "NexKey-${version}-portable.${ext}"
+    },
+    "mac": {
+      "icon": "build/icon.png",
+      "category": "public.app-category.utilities",
+      "identity": null,
+      "target": [
+        { "target": "dmg", "arch": ["x64", "arm64"] }
+      ],
+      "extendInfo": {
+        "LSMinimumSystemVersion": "10.15"
+      }
+    },
+    "dmg": {
+      "title": "NexKey ${version}",
+      "artifactName": "NexKey-${version}-${arch}.${ext}"
+    },
+    "linux": {
+      "icon": "build/icon.png",
+      "category": "Utility",
+      "target": ["AppImage"],
+      "artifactName": "NexKey-${version}-${arch}.${ext}"
+    }
+  }
+}
