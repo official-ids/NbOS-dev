@@ -40,7 +40,28 @@ jobs:
         if: runner.os == 'macOS'
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
-        run: npm run dist:mac
+        run: |
+          VER=$(node -p "require('./package.json').version")
+          OK=0
+          for i in 1 2 3; do
+            echo "DMG build attempt $i of 3"
+            if npx electron-builder --mac dmg --publish never; then OK=1; break; fi
+            echo "Attempt $i failed - cleaning dist and retrying"
+            rm -rf dist
+            sleep 15
+          done
+          if [ "$OK" -ne 1 ]; then
+            echo "DMG kept failing - building plain zip fallback instead"
+            npx electron-builder --mac dir --publish never
+            for APP in $(find dist -maxdepth 2 -name "NexKey.app"); do
+              case "$APP" in
+                *arm64*) SUFFIX="arm64" ;;
+                *) SUFFIX="x64" ;;
+              esac
+              ( cd "$(dirname "$APP")" && ditto -c -k --sequesterRsrc --keepParent NexKey.app "$OLDPWD/NexKey-${VER}-${SUFFIX}-mac.zip" )
+            done
+            test -n "$(find dist -maxdepth 1 -name '*.zip')"
+          fi
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -50,6 +71,7 @@ jobs:
           path: |
             dist/*.exe
             dist/*.dmg
+            dist/*.zip
 
   release:
     name: Publish release
