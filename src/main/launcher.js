@@ -74,6 +74,8 @@ function runBinding(binding, shellAPI, platform) {
     // Windows path
     const ext = path.extname(target).toLowerCase();
     const args = splitArgs(binding.args);
+    const t0 = Date.now();
+    const ms = () => Date.now() - t0;
 
     if (binding.elevated && ext !== '.lnk') {
       const argStr = args.length
@@ -84,32 +86,43 @@ function runBinding(binding, shellAPI, platform) {
         ['-NoProfile', '-NonInteractive', '-Command', cmd],
         { detached: true, stdio: 'ignore', windowsHide: true }
       ).unref();
-      return { ok: true };
+      return { ok: true, ms: ms() };
     }
 
     if (ext === '.exe') {
-      spawn(target, args, {
+      const child = spawn(target, args, {
         cwd: path.dirname(target),
         detached: true,
         stdio: 'ignore',
         windowsHide: true
-      }).unref();
-      return { ok: true };
+      });
+      // A direct spawn can fail on exotic targets (blocked file, broken path) -
+      // fall back to the OS shell handler instead of failing silently.
+      child.on('error', () => {
+        try { shellAPI.openPath(target); } catch (_) { /* noop */ }
+      });
+      child.unref();
+      return { ok: true, ms: ms() };
     }
 
     if (ext === '.bat' || ext === '.cmd') {
-      spawn('cmd.exe', ['/c', target, ...args], {
+      // Console scripts must get their own console with a live stdin. Running
+      // them inline with a closed stdin makes interactive scripts (menus,
+      // prompts) stall or skip logic. "start" opens a real console for the
+      // script, /min keeps it minimized instead of popping over other windows,
+      // and the hidden outer cmd returns instantly - the hotkey never blocks.
+      spawn('cmd.exe', ['/c', 'start', '', '/min', target, ...args], {
         cwd: path.dirname(target),
         detached: true,
         stdio: 'ignore',
         windowsHide: true
       }).unref();
-      return { ok: true };
+      return { ok: true, ms: ms() };
     }
 
     // .lnk, folders, documents, anything with a default handler
     shellAPI.openPath(target);
-    return { ok: true };
+    return { ok: true, ms: ms() };
   } catch (e) {
     return { ok: false, error: String((e && e.message) || e) };
   }

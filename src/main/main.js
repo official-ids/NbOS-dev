@@ -457,6 +457,7 @@ function onHotkeyTrigger(binding) {
   if (res.ok) {
     store.bumpRun(binding.id);
     notify('NexKey', t('launched') + ': ' + binding.name);
+    log('Hotkey launch "' + binding.name + '" handed to OS in ' + (res.ms || 0) + ' ms');
     if (win && !win.isDestroyed()) {
       win.webContents.send('ui:binding-run', { id: binding.id });
     }

@@ -66,6 +66,12 @@ Yes. `%APPDATA%\nexkey\config.json` (Windows) or `~/Library/Application Support/
 **How do I update?**
 Settings - About - "Check for updates", then download the new installer from Releases and install it over the old one. Nothing is deleted.
 
+**Console windows pop up when a .bat script runs (for example, zapret). Is that normal?**
+Yes - the console belongs to the script itself and cannot be removed completely. NexKey starts such scripts minimized to the taskbar so nothing pops over your windows, and the script gets working input, so its menu behaves like a normal double-click. Windows opened by the script itself (individual services it launches) are created by the script too, not by NexKey. For a launch with zero windows, bind the .exe with the required arguments instead of the .bat.
+
+**Why does a script or program take long to start?**
+NexKey hands the launch to the OS instantly (the nexkey.log file shows the time - usually 10-100 ms). Everything after that - the script's own menu, the UAC prompt, SmartScreen on the first run of an unsigned file - is done by Windows or by the launched file itself.
+
 **Windows shows SmartScreen warning on the installer. Is it dangerous?**
 The build is not code-signed with a paid certificate, so Windows shows the standard warning. Click "More info" - "Run anyway". The source code is open - you can also build the installer yourself (`npm run dist:win`).
 

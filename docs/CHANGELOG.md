@@ -3,6 +3,18 @@
 All notable changes to NexKey are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] - 2026-11-09
+
+### Fixed
+
+- Console scripts (.bat / .cmd) now start in their own console, minimized to the
+  taskbar, with working script input. Previously they were run inline with a
+  closed input stream: interactive scripts (menus, prompts) could stall for
+  minutes before doing anything, and terminal windows popped up over other apps.
+- Application launches are more robust: if a direct spawn fails, the launch
+  falls back to the OS shell handler instead of failing silently.
+- Launch latency is measured and written to the log for diagnostics.
+
 ## [1.0.0] - 2026-11-09
 
 First public release. Developed by NsOS Dev x 76 School.

@@ -1,7 +1,7 @@
 {
   "name": "nexkey",
   "productName": "NexKey",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "NexKey - instant hotkey launcher for applications, websites and files. Background utility by NsOS Dev x 76 School.",
   "main": "src/main/main.js",
   "private": true,
@@ -43,8 +43,18 @@
     "win": {
       "icon": "build/icon.ico",
       "target": [
-        { "target": "nsis", "arch": ["x64"] },
-        { "target": "portable", "arch": ["x64"] }
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
       ]
     },
     "nsis": {
@@ -67,7 +77,13 @@
       "category": "public.app-category.utilities",
       "identity": null,
       "target": [
-        { "target": "dmg", "arch": ["x64", "arm64"] }
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
       ],
       "extendInfo": {
         "LSMinimumSystemVersion": "10.15"
@@ -80,7 +96,9 @@
     "linux": {
       "icon": "build/icon.png",
       "category": "Utility",
-      "target": ["AppImage"],
+      "target": [
+        "AppImage"
+      ],
       "artifactName": "NexKey-${version}-${arch}.${ext}"
     }
   }
