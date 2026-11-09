@@ -45,14 +45,14 @@ jobs:
           OK=0
           for i in 1 2 3; do
             echo "DMG build attempt $i of 3"
-            if npx electron-builder --mac dmg --publish never; then OK=1; break; fi
+            if npm run dist:mac; then OK=1; break; fi
             echo "Attempt $i failed - cleaning dist and retrying"
             rm -rf dist
             sleep 15
           done
           if [ "$OK" -ne 1 ]; then
             echo "DMG kept failing - building plain zip fallback instead"
-            npx electron-builder --mac dir --publish never
+            npx electron-builder --mac dir --x64 --arm64 --publish never
             for APP in $(find dist -maxdepth 2 -name "NexKey.app"); do
               case "$APP" in
                 *arm64*) SUFFIX="arm64" ;;
