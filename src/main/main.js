@@ -177,8 +177,7 @@ function showWindow() {
 /* ------------------------------------------------ tray */
 
 function trayIcon() {
-  const p = path.join(IS_WIN ? path.join(ICONS, 'tray.png') : path.join(ICONS, 'tray.png'));
-  const img = nativeImage.createFromPath(p);
+  const img = nativeImage.createFromPath(path.join(ICONS, 'tray.png'));
   return img.isEmpty() ? nativeImage.createFromPath(path.join(ICONS, 'icon.png')) : img;
 }
 
